@@ -55,13 +55,17 @@ export class VkService {
   }
 
   async sendMessage(message: ScheduledMessage) {
-    return await this.apiCall('messages.send', {
-      peer_id: message.peerId,
-      message: message.content,
-      payload: message.payload ?? "",
-      random_id: this.getRandomId(),
-      access_token: message.token,
-    });
+    return await this.apiCall(
+      'messages.send',
+      {
+        peer_id: message.peerId,
+        message: message.content,
+        payload: message.payload ?? '',
+        random_id: this.getRandomId(),
+        access_token: message.token,
+      },
+      'GET',
+    );
   }
 
   async getConversations(token: string, peerId: string) {
@@ -73,8 +77,6 @@ export class VkService {
       },
       'GET',
     );
-
-
     return data.items;
   }
 }

@@ -30,7 +30,7 @@ export class WorkerService {
     this.logger.log(
       `Message #${message.id} sent successful.
       Timestamp: ${timestamp.toISOString()}; 
-      Expected time: ${message.timeForDispatch.toString()}; 
+      Expected time: ${message.timeForDispatch.toISOString()}; 
       Difference: ${differenceInMilliseconds(
         timestamp,
         message.timeForDispatch,
@@ -74,7 +74,7 @@ export class WorkerService {
   async processMessages(messages: ScheduledMessage[]) {
     this.logger.log(`Fetched ${messages.length} messages`);
 
-    for (let message of messages) {
+    for (const message of messages) {
       await this.messageService.update(message.id, {
         status: MessageStatus.PROCESSED,
       });

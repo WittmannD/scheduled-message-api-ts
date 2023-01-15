@@ -3,6 +3,7 @@ import { MessageStatus, ScheduledMessage } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { DatabaseService } from '../database/database.service';
+import { GetMessagesQueryDto } from './dto/get-messages-query.dto';
 
 @Injectable()
 export class MessageService {
@@ -31,12 +32,14 @@ export class MessageService {
   async findUserConversationMessages(
     userId: string,
     peerId: string,
+    options?: GetMessagesQueryDto,
   ): Promise<ScheduledMessage[]> {
     return await this.dataSource.scheduledMessage.findMany({
       where: {
         userId,
         peerId,
       },
+      orderBy: options?.orderBy,
     });
   }
 
@@ -68,9 +71,14 @@ export class MessageService {
     });
   }
 
-  async removeUserMessage(userId: string, id: number) {
+  async removeUserMessages(userId: string, ids: number[]) {
     await this.dataSource.scheduledMessage.deleteMany({
-      where: { id, userId },
+      where: {
+        id: {
+          in: ids,
+        },
+        userId,
+      },
     });
   }
 }

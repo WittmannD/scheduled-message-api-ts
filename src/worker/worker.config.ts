@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { IWorkerConfig } from './intrefaces/config.interface';
-import * as process from "process";
+import * as process from 'process';
 
 export default registerAs(
   'scheduler',
